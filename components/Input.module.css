@@ -1,0 +1,45 @@
+/*Border Gradients and Colors*/
+
+.inputContainer {
+    position: relative;
+    display: inline-block;
+    padding: 4px;
+    background: linear-gradient(90deg, rgba(58,169,255,1) 0%, rgba(0,128,255,1) 50%, rgba(113,212,255,1) 100%); /* Updated colors and transition points */
+    border-radius: 5px;
+  }
+  
+  .gradientBorder {
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border: 4px solid transparent;
+    background: linear-gradient(white, white) padding-box, linear-gradient(90deg, rgba(58,169,255,1) 0%, rgba(0,128,255,1) 50%, rgba(113,212,255,1) 100%) border-box; /* Updated colors and transition points */
+    border-radius: 5px;
+    z-index: -1;
+  }
+  
+  @keyframes travel {
+    0% {
+      transform: translate(0, 0);
+    }
+    25% {
+      transform: translate(100%, 0);
+    }
+    50% {
+      transform: translate(100%, 100%);
+    }
+    75% {
+      transform: translate(0, 100%);
+    }
+    100% {
+      transform: translate(0, 0);
+    }
+  }
+  
+  .inputContainer:focus-within .gradientBorder {
+    animation: travel 3s infinite linear;
+  }
+  
