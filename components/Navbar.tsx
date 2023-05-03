@@ -1,4 +1,5 @@
 import NavbarItem from './NavbarItem';
+import { GiHamburgerMenu } from 'react-icons/bs';
 
 
 const Navbar = () => {
@@ -35,8 +36,12 @@ const Navbar = () => {
                     <NavbarItem label="Whats New?" />
                     <NavbarItem label="Seasonal" />
                 </div>
+
+                <!-- MOBILE SUPPORT -->
+
                 <div className="lg:hidden flex flex-row items-center gap-2 ml-8 cursor-pointer relative">
-                    <p className="text-white text-sm">Browse -</p>
+                    <p className="text-white text-sm">Brwse -</p>
+                    <GiHamburgerMenu className="text-white transition"/>
                     <p className="text-white text-sm">Favorites -</p>
                     <p className="text-white text-sm">Continue Watching</p>
                 </div>
