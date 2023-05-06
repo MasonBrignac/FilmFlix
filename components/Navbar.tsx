@@ -4,10 +4,17 @@ import { GiHamburgerMenu } from 'react-icons/gi';
 import { BsSearch, BsChevronDown } from 'react-icons/bs';
 import MobileMenu from './MobileMenu';
 import AccountMenu from './AccountMenu';
+import { useRouter } from 'next/router';
 
 const TOP_OFFSET = 66;
 
 const Navbar = () => {
+  const router = useRouter();
+
+  if (router.pathname !== '/') {
+    return null;
+  }
+
   const [showMobileMenu, setShowMobileMenu] = useState(false);
   const [showAccountMenu, setShowAccountMenu] = useState(false);
   const [showBackground, setShowBackground] = useState(false);
