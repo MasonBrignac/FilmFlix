@@ -6,7 +6,8 @@ import Billboard from '@/components/Billboard';
 import MovieList from '@/components/MovieList';
 import useMovieList from '@/hooks/useMovieList';
 import useFavorites from '@/hooks/useFavorites';
-
+import InfoModal from '@/components/InfoModal';
+import useInfoModal from '@/hooks/useInfoModal';
 
 
 export async function getServerSideProps(context: NextPageContext) {
@@ -18,32 +19,38 @@ export async function getServerSideProps(context: NextPageContext) {
         redirect: {
           destination: '/auth',
           permanent: false,
-        }
+        },
       };
     }
 
     return {
-      props: {}
+      props: {},
     };
   } catch (error) {
     console.error('Error in getServerSideProps:', error);
     return {
-      props: {}
+      props: {},
     };
   }
 }
 
 export default function Home() {
-  const { data: movies = [] } = useMovieList();
+  const { data: movies = [], isLoading } = useMovieList();
   const { data: favorites = [] } = useFavorites();
+  const {isOpen, closeModal} = useInfoModal();
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <>
-      <Navbar/>
-      <Billboard/>
+      <InfoModal visible={isOpen} onClose={closeModal} />
+      <Navbar />
+      <Billboard />
       <div className="pb-40">
-      <MovieList title="Trending Now" data={movies} />
-      <MovieList title="MyList" data={favorites} />
+        <MovieList title="Trending Now" data={movies} />
+        <MovieList title="Favorites" data={favorites} />
       </div>
     </>
   );

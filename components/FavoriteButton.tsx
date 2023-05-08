@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, { useCallback, useMemo } from 'react';
 import { AiOutlinePlus, AiOutlineCheck } from 'react-icons/ai';
+import { useSession } from 'next-auth/react';
 
 import useCurrentUser from '@/hooks/useCurrentUser';
 import useFavorites from '@/hooks/useFavorites';
@@ -10,20 +11,24 @@ interface FavoriteButtonProps {
 }
 
 const FavoriteButton: React.FC<FavoriteButtonProps> = ({ movieId }) => {
+  const { session, status } = useSession();
+  console.log('Session in FavoriteButton:', session);
+
   const { mutate: mutateFavorites } = useFavorites();
   const { data: currentUser, mutate } = useCurrentUser();
 
-  const isFavorite = useMemo(() => {
+  const isFavorite = useMemo<boolean>(() => {
     const list = currentUser?.favoriteIds || [];
-
+  
     return list.includes(movieId);
   }, [currentUser, movieId]);
+  
 
   const toggleFavorites = useCallback(async () => {
     let response;
 
     if (isFavorite) {
-      response = await axios.delete('/api/favorite', { data: { movieId } });
+      response = await axios.delete(`/api/favorite?movieId=${movieId}`);
     } else {
       response = await axios.post('/api/favorite', { movieId });
     }
