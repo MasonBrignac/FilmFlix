@@ -11,14 +11,14 @@ interface FavoriteButtonProps {
   movieId: string;
 }
 
-function hasSession(obj: any): obj is { session: Session | null; status: string } {
-  return 'session' in obj;
-}
-
 const FavoriteButton: React.FC<FavoriteButtonProps> = ({ movieId }) => {
   const sessionData = useSession();
   const { mutate: mutateFavorites } = useFavorites();
   const { data: currentUser, mutate } = useCurrentUser();
+
+  const hasSession = useCallback((obj: any): obj is { session: Session | null; status: string } => {
+    return 'session' in obj;
+  }, []);
 
   if (!hasSession(sessionData)) {
     return null;
@@ -79,3 +79,4 @@ const FavoriteButton: React.FC<FavoriteButtonProps> = ({ movieId }) => {
 };
 
 export default FavoriteButton;
+
