@@ -20,11 +20,7 @@ const FavoriteButton: React.FC<FavoriteButtonProps> = ({ movieId }) => {
     return 'session' in obj;
   }, []);
 
-  if (!hasSession(sessionData)) {
-    return null;
-  }
-
-  const { session, status } = sessionData;
+  const { session, status } = hasSession(sessionData) ? sessionData : { session: null, status: 'loading' };
   console.log('Session in FavoriteButton:', session);
 
   const isFavorite = useMemo<boolean>(() => {
@@ -50,6 +46,10 @@ const FavoriteButton: React.FC<FavoriteButtonProps> = ({ movieId }) => {
     });
     mutateFavorites();
   }, [movieId, isFavorite, currentUser, mutate, mutateFavorites]);
+
+  if (!session) {
+    return null;
+  }
 
   const Icon = isFavorite ? AiOutlineCheck : AiOutlinePlus;
 
@@ -79,4 +79,3 @@ const FavoriteButton: React.FC<FavoriteButtonProps> = ({ movieId }) => {
 };
 
 export default FavoriteButton;
-
