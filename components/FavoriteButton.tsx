@@ -17,6 +17,8 @@ function hasSession(obj: any): obj is { session: Session | null; status: string 
 
 const FavoriteButton: React.FC<FavoriteButtonProps> = ({ movieId }) => {
   const sessionData = useSession();
+  const { mutate: mutateFavorites } = useFavorites();
+  const { data: currentUser, mutate } = useCurrentUser();
 
   if (!hasSession(sessionData)) {
     return null;
@@ -24,9 +26,6 @@ const FavoriteButton: React.FC<FavoriteButtonProps> = ({ movieId }) => {
 
   const { session, status } = sessionData;
   console.log('Session in FavoriteButton:', session);
-
-  const { mutate: mutateFavorites } = useFavorites();
-  const { data: currentUser, mutate } = useCurrentUser();
 
   const isFavorite = useMemo<boolean>(() => {
     const list = currentUser?.favoriteIds || [];
