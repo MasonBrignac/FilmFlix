@@ -1,10 +1,11 @@
 import React, { useCallback, useState, useEffect } from 'react';
-import NavbarItem from './NavbarItem';
 import { GiHamburgerMenu } from 'react-icons/gi';
 import { BsSearch, BsChevronDown } from 'react-icons/bs';
 import MobileMenu from './MobileMenu';
 import AccountMenu from './AccountMenu';
 import { useRouter } from 'next/router';
+import Link from 'next/link';
+import NavbarItem from './NavbarItem';
 
 const TOP_OFFSET = 66;
 
@@ -39,10 +40,6 @@ const Navbar = () => {
     setShowAccountMenu((current) => !current);
   }, []);
 
-  if (router.pathname !== '/') {
-    return null;
-  }
-
   return (
     <nav className="navbar w-full fixed z-40">
       <div
@@ -64,17 +61,32 @@ const Navbar = () => {
           className="
             flex-row
             ml-8
-            gap-7
+            gap-4
             hidden
             lg:flex
           "
         >
-          <NavbarItem label="Home" />
-          <NavbarItem label="Profile" />
-          <NavbarItem label="Favorites" />
-          <NavbarItem label="Continue Watching" />
-          <NavbarItem label="Whats New?" />
-          <NavbarItem label="Seasonal" />
+          <Link href="/">
+            <NavbarItem label="Home" />
+          </Link>
+          <Link href="/profile">
+            <NavbarItem label="Profiles" />
+          </Link>
+          <Link href="/favorites">
+            <NavbarItem label="Favorites" />
+          </Link>
+          <Link href="/resumeWatching">
+            <NavbarItem label="Resume Watching" />
+          </Link>
+          <Link href="/New">
+            <NavbarItem label="New" />
+          </Link>
+          <Link href="/indieShorts">
+            <NavbarItem label="Indie Shorts" />
+          </Link>
+          <Link href="/indieMovies">
+            <NavbarItem label="Indie Movies" />
+          </Link>
         </div>
 
         <div
