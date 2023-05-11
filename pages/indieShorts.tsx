@@ -7,14 +7,20 @@ import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 export async function getServerSideProps() {
-  const indieShorts = await prisma.movie.findMany({
+  const indieShortsRaw = await prisma.movie.findMany({
     where: {
       category: 'indieShorts',
     },
-    include: {
-      episodes: true,
-    },
   });
+
+  const indieShorts = indieShortsRaw.reduce((acc, movie) => {
+    const key = movie.seriesId || movie.id;
+    if (!acc[key]) {
+      acc[key] = [];
+    }
+    acc[key].push(movie);
+    return acc;
+  }, {});
 
   return {
     props: {
@@ -23,13 +29,16 @@ export async function getServerSideProps() {
   };
 }
 
+
 export default function IndieShorts({ indieShorts }) {
   return (
     <>
       <Navbar />
       <Billboard />
       <div className="pb-40">
-        <MovieList title="Indie Shorts" data={indieShorts} />
+        {indieShorts && Object.entries(indieShorts).map(([seriesId, movies]) => (
+          <MovieList key={seriesId} title={movies[0]?.title} data={movies} />
+        ))}
       </div>
     </>
   );

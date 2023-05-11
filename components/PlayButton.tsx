@@ -4,14 +4,23 @@ import { useRouter } from 'next/router';
 
 interface PlayButtonProps {
   movieId: string;
+  onPlay?: () => void; // Add this line
 }
 
-const PlayButton: React.FC<PlayButtonProps> = ({ movieId }) => {
+const PlayButton: React.FC<PlayButtonProps> = ({ movieId, onPlay }) => {
   const router = useRouter();
+
+  const handleClick = () => {
+    if (onPlay) {
+      onPlay();
+    }
+
+    router.push(`/watch/${movieId}`);
+  };
 
   return (
     <button 
-      onClick={() => router.push(`/watch/${movieId}`)}
+      onClick={handleClick}
       className="
         bg-white 
         rounded-md 

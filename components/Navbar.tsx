@@ -78,9 +78,6 @@ const Navbar = () => {
           <Link href="/resumeWatching">
             <NavbarItem label="Resume Watching" />
           </Link>
-          <Link href="/New">
-            <NavbarItem label="New" />
-          </Link>
           <Link href="/indieShorts">
             <NavbarItem label="Indie Shorts" />
           </Link>

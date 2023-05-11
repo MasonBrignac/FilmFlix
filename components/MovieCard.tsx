@@ -9,13 +9,23 @@ interface MovieCardProps {
   data: Record<string, any>;
 }
 
-const MovieCard: React.FC<MovieCardProps> = ({ 
-  data
- }) => {
+const MovieCard: React.FC<MovieCardProps> = ({ data }) => {
   const router = useRouter();
   const { openModal } = useInfoModal();
+
+  // We define a new function to handle the click on the play button
+  const handlePlayClick = async () => {
+    if (data.isSeries) {
+      // If it's a series, we redirect to the series page
+      router.push(`/series/${data?.id}`);
+    } else {
+      // If it's a movie, we redirect to the watch page
+      router.push(`/watch/${data?.id}`);
+    }
+  };
+
   return (
-    <div className="group bg-zinc-900 col-span relative h-[12vw]">
+    <div className="group bg-zinc-900 col-span relative h-[17vw] w-[30vw] border-2 border-blue-400">
       <img className="
         cursor-pointer
         object-cover
@@ -24,10 +34,9 @@ const MovieCard: React.FC<MovieCardProps> = ({
         shadow-xl
         rounded-md
         group-hover:opacity-90
-        sm:group-hover:opacity-0
         delay-300
         w-full
-        h-[12vw]
+        h-full
       " src={data.thumbnailUrl} alt="Thumbnail" />
       <div className="
         opacity-0
@@ -40,23 +49,8 @@ const MovieCard: React.FC<MovieCardProps> = ({
         sm:visible
         delay-300
         w-full
-        scale-0
-        group-hover:scale-110
-        group-hover:-translate-y-[6vw]
-        group-hover:translate-x-[2vw]
         group-hover:opacity-100
       ">
-        <img className="
-          cursor-pointer
-          object-cover
-          transition
-          duration
-          shadow-xl
-          rounded-t-md
-          w-full
-          h-[12vw]
-        "
-        src={data.thumbnailUrl} alt="Thumbnail" />
         <div className="
           z-10
           bg-zinc-800
@@ -70,7 +64,7 @@ const MovieCard: React.FC<MovieCardProps> = ({
           ">
           <div className="flex flex-row items-center gap-3">
             <div className="cursor-pointer w-6 h-6 lg:w-10 lg:h-10 bg-white rounded-full flex justify-center items-center transition hover:bg-neutral-300"
-              onClick={() => router.push(`/watch/${data?.id}`)} >
+              onClick={handlePlayClick} >  {/* We use the new function here */}
               <BsFillPlayFill className="text-black w-4 lg:w-6" />
             </div>
             <FavoriteButton movieId={data?.id} />
