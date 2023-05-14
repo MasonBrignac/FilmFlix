@@ -33,10 +33,12 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   favoriteIds String[] @db.ObjectId
+  watchingIds String[] @db.ObjectId
   sessions Session[]
   accounts Account[]
 
 }
+
 
 model Account {
   id String @id @default(auto()) @map("_id") @db.ObjectId

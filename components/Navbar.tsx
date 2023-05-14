@@ -6,10 +6,14 @@ import AccountMenu from './AccountMenu';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import NavbarItem from './NavbarItem';
+import { useSession } from 'next-auth/react';
 
 const TOP_OFFSET = 66;
 
 const Navbar = () => {
+  const { data: session, status } = useSession();
+  const loading = status === "loading";
+
   const router = useRouter();
   const [showMobileMenu, setShowMobileMenu] = useState(false);
   const [showAccountMenu, setShowAccountMenu] = useState(false);
@@ -37,8 +41,17 @@ const Navbar = () => {
   }, []);
 
   const toggleAccountMenu = useCallback(() => {
-    setShowAccountMenu((current) => !current);
+    setShowAccountMenu((current) => {
+      console.log(current); // debugging the cheveron
+      return !current;
+    });
   }, []);
+
+  if (!session || loading) {
+    return null;
+  }
+
+  if (router.pathname === '/profiles') return null;
 
   return (
     <nav className="navbar w-full fixed z-40">
@@ -56,12 +69,12 @@ const Navbar = () => {
           ${showBackground ? 'bg-opacity-100' : 'bg-opacity-40'}
         `}
       >
-        <img src="/images/logo.png" className="h-6 lg:h-9" alt="Logo" />
+        <img src="/images/logo.png" className="h-8 lg:h-9" alt="Logo" />
         <div
           className="
             flex-row
-            ml-8
-            gap-4
+            ml-10
+            gap-8
             hidden
             lg:flex
           "
@@ -74,9 +87,6 @@ const Navbar = () => {
           </Link>
           <Link href="/favorites">
             <NavbarItem label="Favorites" />
-          </Link>
-          <Link href="/resumeWatching">
-            <NavbarItem label="Resume Watching" />
           </Link>
           <Link href="/indieShorts">
             <NavbarItem label="Indie Shorts" />
@@ -107,10 +117,14 @@ const Navbar = () => {
               <img src="/images/treesbackground.png" alt="" />
             </div>
             <BsChevronDown
-              className={`w-4 text-white fill-white transition ${
-                showAccountMenu ? 'rotate-180' : 'rotate-0'
-              }`}
+              style={{
+                transition: 'transform 0.3s',
+                transform: `rotate(${showAccountMenu ? '180deg' : '0deg'})`
+              }}
+              className="w-4 text-white fill-white"
             />
+
+
             <AccountMenu visible={showAccountMenu} />
           </div>
         </div>
